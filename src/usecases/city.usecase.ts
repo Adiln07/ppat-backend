@@ -1,0 +1,81 @@
+import {
+  getAllCitiesRepository,
+  getCityByIdRepository,
+  getCityByNameRepository,
+  createCityRepository,
+  updateCityRepository,
+} from "../repositories/city.repository.js";
+
+const getAllCitiesUseCase = async () => {
+  const cities = await getAllCitiesRepository();
+  return cities;
+};
+
+const getCityByIdUseCase = async (id: number) => {
+  if (id <= 0) {
+    throw new Error("Invalid city ID");
+  }
+
+  const city = await getCityByIdRepository(id);
+
+  if (!city) {
+    throw new Error("City not found");
+  }
+
+  return city;
+};
+
+const createCityUseCase = async (name: string) => {
+  if (!name) {
+    throw new Error("City name is required");
+  }
+
+  const trimmedName = name.trim();
+
+  if (trimmedName === "") {
+    throw new Error("City name cannot be empty");
+  }
+
+  const existingCity = await getCityByNameRepository(trimmedName);
+  if (existingCity) {
+    throw new Error("City with this name already exists");
+  }
+
+  const newCity = await createCityRepository(trimmedName);
+  return newCity;
+};
+
+const updateCityUseCase = async (id: number, name: string) => {
+  if (id <= 0) {
+    throw new Error("Invalid city ID");
+  }
+
+  const city = await getCityByIdRepository(id);
+
+  if (!city) {
+    throw new Error("City not found");
+  }
+
+  if (!name) {
+    throw new Error("City name is required");
+  }
+
+  const trimmedName = name.trim();
+  if (trimmedName === "") {
+    throw new Error("City name cannot be empty");
+  }
+
+  if (city.name === trimmedName) {
+    throw new Error("City name is the same as the current name");
+  }
+
+  const updatedCity = await updateCityRepository(id, trimmedName);
+  return updatedCity;
+};
+
+export {
+  getAllCitiesUseCase,
+  getCityByIdUseCase,
+  createCityUseCase,
+  updateCityUseCase,
+};
