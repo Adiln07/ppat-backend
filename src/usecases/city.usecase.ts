@@ -4,6 +4,7 @@ import {
   getCityByNameRepository,
   createCityRepository,
   updateCityRepository,
+  deleteCityRepository,
 } from "../repositories/city.repository.js";
 
 const getAllCitiesUseCase = async () => {
@@ -50,12 +51,6 @@ const updateCityUseCase = async (id: number, name: string) => {
     throw new Error("Invalid city ID");
   }
 
-  const city = await getCityByIdRepository(id);
-
-  if (!city) {
-    throw new Error("City not found");
-  }
-
   if (!name) {
     throw new Error("City name is required");
   }
@@ -63,6 +58,17 @@ const updateCityUseCase = async (id: number, name: string) => {
   const trimmedName = name.trim();
   if (trimmedName === "") {
     throw new Error("City name cannot be empty");
+  }
+
+  const city = await getCityByIdRepository(id);
+
+  if (!city) {
+    throw new Error("City not found");
+  }
+
+  const existingCity = await getCityByNameRepository(trimmedName);
+  if (existingCity && existingCity.id !== id) {
+    throw new Error("City with this name already exists");
   }
 
   if (city.name === trimmedName) {
@@ -73,9 +79,25 @@ const updateCityUseCase = async (id: number, name: string) => {
   return updatedCity;
 };
 
+const deleteCityUseCase = async (id: number) => {
+  if (id <= 0) {
+    throw new Error("Invalid city ID");
+  }
+
+  const city = await getCityByIdRepository(id);
+
+  if (!city) {
+    throw new Error("City not found");
+  }
+
+  const deletedCity = await deleteCityRepository(id);
+  return deletedCity;
+};
+
 export {
   getAllCitiesUseCase,
   getCityByIdUseCase,
   createCityUseCase,
   updateCityUseCase,
+  deleteCityUseCase,
 };

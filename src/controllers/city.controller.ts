@@ -3,10 +3,10 @@ import {
   getCityByIdUseCase,
   createCityUseCase,
   updateCityUseCase,
+  deleteCityUseCase,
 } from "../usecases/city.usecase.js";
 import { Request, Response } from "express";
 import { successResponse, errorResponse } from "../utils/response.js";
-import { City } from "../types/city.js";
 
 const getAllCitiesController = async (req: Request, res: Response) => {
   try {
@@ -54,9 +54,22 @@ const updateCityController = async (req: Request, res: Response) => {
   }
 };
 
+const deleteCityController = async (req: Request, res: Response) => {
+  try {
+    const cityId = Number(req.params.id);
+    const deletedCity = await deleteCityUseCase(cityId);
+    successResponse(res, deletedCity, "City deleted successfully");
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to delete city";
+    errorResponse(res, errorMessage);
+  }
+};
+
 export {
   getAllCitiesController,
   getCityByIdController,
   createCityController,
   updateCityController,
+  deleteCityController,
 };

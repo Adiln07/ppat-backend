@@ -51,10 +51,20 @@ const updateCityRepository = async (id: number, name: string) => {
   return updatedCity;
 };
 
+const deleteCityRepository = async (id: number) => {
+  const deletedCity = await prisma.kota.delete({
+    where: {
+      id,
+    },
+  });
+  return deletedCity;
+};
+
 export {
   getAllCitiesRepository,
   getCityByIdRepository,
   getCityByNameRepository,
   createCityRepository,
   updateCityRepository,
+  deleteCityRepository,
 };
