@@ -7,7 +7,7 @@ import {
 } from "../usecases/notaries.usecase.js";
 import { Request, Response } from "express";
 import { successResponse, errorResponse } from "../utils/response.js";
-import { Notary, NotaryInput, NotaryUpdate } from "../types/notary.js";
+import { NotaryInput, NotaryUpdate } from "../types/notary.js";
 
 const getAllNotariesController = async (req: Request, res: Response) => {
   try {

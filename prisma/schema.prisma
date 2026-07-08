@@ -39,3 +39,15 @@ model Notaris{
 
   updatedAt   DateTime @updatedAt
 }
+
+model Artikel {
+  id          Int      @id @default(autoincrement())
+  title       String
+  theme       String
+  eventDate   DateTime
+  imageUrl    String
+  description String   @db.LongText
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
