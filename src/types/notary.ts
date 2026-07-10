@@ -26,3 +26,10 @@ export type NotaryUpdate = {
   mapUrl: string;
   imageUrl: string;
 };
+
+export type FilterNotary = {
+  kotaId?: number;
+  name?: string;
+  page?: number;
+  limit?: number;
+};

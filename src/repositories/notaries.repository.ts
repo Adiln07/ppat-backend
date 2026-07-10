@@ -1,7 +1,23 @@
 import prisma from "../config/prisma.js";
-import { NotaryUpdate, NotaryInput } from "../types/notary.js";
+import { FilterNotary, NotaryUpdate, NotaryInput } from "../types/notary.js";
 
-const getAllNotariesRepository = async () => {
+const getAllNotariesRepository = async (filter: FilterNotary) => {
+  const where: any = {};
+
+  if (filter.kotaId) {
+    where.kotaId = filter.kotaId;
+  }
+  if (filter.name) {
+    where.name = {
+      contains: filter.name,
+    };
+  }
+
+  const page = Number(filter.page) || 1;
+
+  const take = filter.limit ? Number(filter.limit) : undefined;
+  const skip = take ? (page - 1) * take : undefined;
+
   const notaries = await prisma.notaris.findMany({
     select: {
       id: true,
@@ -14,6 +30,9 @@ const getAllNotariesRepository = async () => {
       createdAt: true,
       updatedAt: true,
     },
+    where,
+    skip,
+    take,
   });
   return notaries;
 };

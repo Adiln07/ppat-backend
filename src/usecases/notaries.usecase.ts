@@ -8,10 +8,44 @@ import {
 } from "../repositories/notaries.repository.js";
 import { getCityByIdRepository } from "../repositories/city.repository.js";
 
-import { NotaryInput, NotaryUpdate } from "../types/notary.js";
+import { FilterNotary, NotaryInput, NotaryUpdate } from "../types/notary.js";
 
-const getAllNotariesUseCase = async () => {
-  const notaries = await getAllNotariesRepository();
+const getAllNotariesUseCase = async (filter: FilterNotary) => {
+  if (filter.kotaId) {
+    if (filter.kotaId <= 0) {
+      throw new Error("Invalid Kota ID");
+    }
+  }
+
+  if (filter.name) {
+    if (!filter.name.trim()) {
+      throw new Error("Invalid Searching By Name");
+    }
+  }
+
+  if (filter.page) {
+    const page = Number(filter.page);
+
+    if (isNaN(page)) {
+      throw new Error("Page must be a number");
+    }
+
+    if (page <= 0) {
+      throw new Error("Invalid Page");
+    }
+  }
+
+  if (filter.limit) {
+    const limit = Number(filter.limit);
+    if (isNaN(limit)) {
+      throw new Error("Limit Must be a number");
+    }
+    if (limit <= 0) {
+      throw new Error("Invalid Limit");
+    }
+  }
+
+  const notaries = await getAllNotariesRepository(filter);
   return notaries;
 };
 
