@@ -4,3 +4,9 @@ export type City = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type FilterCity = {
+  name?: string;
+  page?: number;
+  limit?: number;
+};

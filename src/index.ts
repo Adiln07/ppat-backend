@@ -3,9 +3,12 @@ import dotenv from "dotenv";
 import cityRoutes from "./routes/city.route.js";
 import notariesRoutes from "./routes/notaries.route.js";
 import articleRoutes from "./routes/article.route.js";
+import cors from "cors";
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
 
 const PORT = process.env.PORT;
 app.use(express.json());

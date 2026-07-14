@@ -7,9 +7,55 @@ import {
   deleteCityRepository,
 } from "../repositories/city.repository.js";
 
-const getAllCitiesUseCase = async () => {
-  const cities = await getAllCitiesRepository();
-  return cities;
+import { FilterCity } from "../types/city.js";
+import { Pagination } from "../types/pagination.js";
+
+const getAllCitiesUseCase = async (filter: FilterCity) => {
+  if (filter.name) {
+    if (!filter.name.trim()) {
+      throw new Error("Invalid Searching By Name");
+    }
+  }
+
+  if (filter.page) {
+    const page = Number(filter.page);
+
+    if (isNaN(page)) {
+      throw new Error("Page must be a number");
+    }
+
+    if (page <= 0) {
+      throw new Error("Invalid Page");
+    }
+  }
+
+  if (filter.limit) {
+    const limit = Number(filter.limit);
+    if (isNaN(limit)) {
+      throw new Error("Limit Must be a number");
+    }
+    if (limit <= 0) {
+      throw new Error("Invalid Limit");
+    }
+  }
+
+  const { cities, totalItems } = await getAllCitiesRepository(filter);
+
+  const page = Number(filter.page) || 1;
+  const limit = Number(filter.limit) || 10;
+  const totalPages = Math.ceil(totalItems / limit);
+
+  const pagination: Pagination = {
+    page,
+    limit,
+    totalItems: totalItems,
+    totalPages: totalPages,
+  };
+
+  return {
+    cities,
+    pagination,
+  };
 };
 
 const getCityByIdUseCase = async (id: number) => {

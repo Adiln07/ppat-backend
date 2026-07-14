@@ -1,5 +1,18 @@
 import prisma from "../config/prisma.js";
-const getAllCitiesRepository = async () => {
+import { FilterCity } from "../types/city.js";
+
+const getAllCitiesRepository = async (filter: FilterCity) => {
+  const where: any = {};
+
+  if (filter.name) {
+    where.name = {
+      contains: filter.name,
+    };
+  }
+  const page = Number(filter.page) || 1;
+
+  const take = filter.limit ? Number(filter.limit) : undefined;
+  const skip = take ? (page - 1) * take : undefined;
   const cities = await prisma.kota.findMany({
     select: {
       id: true,
@@ -7,9 +20,15 @@ const getAllCitiesRepository = async () => {
       createdAt: true,
       updatedAt: true,
     },
+    where,
+    skip,
+    take,
+  });
+  const totalItems = await prisma.kota.count({
+    where,
   });
 
-  return cities;
+  return { cities, totalItems };
 };
 
 const getCityByIdRepository = async (id: number) => {

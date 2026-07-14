@@ -7,13 +7,21 @@ import {
 } from "../usecases/city.usecase.js";
 import { Request, Response } from "express";
 import { successResponse, errorResponse } from "../utils/response.js";
+import { FilterCity } from "../types/city.js";
 
 const getAllCitiesController = async (req: Request, res: Response) => {
   try {
-    const cities = await getAllCitiesUseCase();
-    successResponse(res, cities, "Cities fetched successfully");
+    const filter: FilterCity = {
+      name: req.query.name ? String(req.query.name) : undefined,
+      page: req.query.page ? Number(req.query.page) : undefined,
+      limit: req.query.limit ? Number(req.query.limit) : undefined,
+    };
+    const { cities, pagination } = await getAllCitiesUseCase(filter);
+    successResponse(res, cities, "Cities fetched successfully", pagination);
   } catch (error) {
-    errorResponse(res, "Failed to fetch cities");
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to fetch All city";
+    errorResponse(res, errorMessage);
   }
 };
 
