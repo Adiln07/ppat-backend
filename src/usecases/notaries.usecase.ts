@@ -9,6 +9,7 @@ import {
 import { getCityByIdRepository } from "../repositories/city.repository.js";
 
 import { FilterNotary, NotaryInput, NotaryUpdate } from "../types/notary.js";
+import { Pagination } from "../types/pagination.js";
 
 const getAllNotariesUseCase = async (filter: FilterNotary) => {
   if (filter.kotaId) {
@@ -45,8 +46,18 @@ const getAllNotariesUseCase = async (filter: FilterNotary) => {
     }
   }
 
-  const notaries = await getAllNotariesRepository(filter);
-  return notaries;
+  const { notaries, totalItems } = await getAllNotariesRepository(filter);
+  const page = Number(filter.page) || 1;
+  const limit = Number(filter.limit) || 10;
+  const totalPages = Math.ceil(totalItems / limit);
+
+  const pagination: Pagination = {
+    page,
+    limit,
+    totalItems: totalItems,
+    totalPages: totalPages,
+  };
+  return { notaries, pagination };
 };
 
 const getNotaryByIdUseCase = async (id: number) => {

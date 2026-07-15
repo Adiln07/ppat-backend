@@ -34,7 +34,10 @@ const getAllNotariesRepository = async (filter: FilterNotary) => {
     skip,
     take,
   });
-  return notaries;
+  const totalItems = await prisma.notaris.count({
+    where,
+  });
+  return { notaries, totalItems };
 };
 
 const getNotaryByIdRepository = async (id: number) => {

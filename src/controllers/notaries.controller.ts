@@ -18,8 +18,8 @@ const getAllNotariesController = async (req: Request, res: Response) => {
       limit: req.query.limit ? Number(req.query.limit) : undefined,
     };
 
-    const notaries = await getAllNotariesUseCase(filter);
-    successResponse(res, notaries, "Notaries fetched successfully");
+    const { notaries, pagination } = await getAllNotariesUseCase(filter);
+    successResponse(res, notaries, "Notaries fetched successfully", pagination);
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Failed to fetch all notary";
