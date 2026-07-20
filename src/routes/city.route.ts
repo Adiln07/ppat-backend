@@ -6,13 +6,14 @@ import {
   updateCityController,
   deleteCityController,
 } from "../controllers/city.controller.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/", getAllCitiesController);
-router.get("/:id", getCityByIdController);
-router.post("/", createCityController);
-router.patch("/:id", updateCityController);
-router.delete("/:id", deleteCityController);
+router.get("/", authMiddleware, getAllCitiesController);
+router.get("/:id", authMiddleware, getCityByIdController);
+router.post("/", authMiddleware, createCityController);
+router.patch("/:id", authMiddleware, updateCityController);
+router.delete("/:id", authMiddleware, deleteCityController);
 
 export default router;

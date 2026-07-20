@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cityRoutes from "./routes/city.route.js";
 import notariesRoutes from "./routes/notaries.route.js";
 import articleRoutes from "./routes/article.route.js";
+import authRoutes from "./routes/auth.route.js";
 import cors from "cors";
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
   res.send("Hello Express + TypeScript !");
 });
 
+app.use("/admin", authRoutes);
 app.use("/cities", cityRoutes);
 app.use("/notaries", notariesRoutes);
 app.use("/article", articleRoutes);
