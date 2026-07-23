@@ -6,13 +6,14 @@ import {
   updateArticleController,
   deleteArticleController,
 } from "../controllers/article.controller.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/", getAllArticleController);
-router.get("/:id", getArticleByIdController);
-router.post("/", createArticleController);
-router.patch("/:id", updateArticleController);
-router.delete("/:id", deleteArticleController);
+router.get("/", authMiddleware, getAllArticleController);
+router.get("/:id", authMiddleware, getArticleByIdController);
+router.post("/", authMiddleware, createArticleController);
+router.patch("/:id", authMiddleware, updateArticleController);
+router.delete("/:id", authMiddleware, deleteArticleController);
 
 export default router;
