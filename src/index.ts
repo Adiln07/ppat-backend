@@ -4,7 +4,9 @@ import cityRoutes from "./routes/city.route.js";
 import notariesRoutes from "./routes/notaries.route.js";
 import articleRoutes from "./routes/article.route.js";
 import authRoutes from "./routes/auth.route.js";
+import uploadRoutes from "./routes/upload.route.js";
 import cors from "cors";
+import path from "path";
 dotenv.config();
 
 const app = express();
@@ -22,6 +24,8 @@ app.use("/admin", authRoutes);
 app.use("/cities", cityRoutes);
 app.use("/notaries", notariesRoutes);
 app.use("/article", articleRoutes);
+app.use("/upload", uploadRoutes);
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);

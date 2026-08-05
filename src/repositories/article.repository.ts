@@ -1,7 +1,20 @@
 import prisma from "../config/prisma.js";
-import { ArticleInput } from "../types/article.js";
+import { ArticleInput, FilterArticle } from "../types/article.js";
 
-const getAllArticleRepository = async () => {
+const getAllArticleRepository = async (filter: FilterArticle) => {
+  const where: any = {};
+
+  if (filter.title) {
+    where.title = {
+      contains: filter.title,
+    };
+  }
+
+  const page = Number(filter.page) || 1;
+
+  const take = filter.limit ? Number(filter.limit) : undefined;
+  const skip = take ? (page - 1) * take : undefined;
+
   const articles = await prisma.artikel.findMany({
     select: {
       id: true,
@@ -13,8 +26,22 @@ const getAllArticleRepository = async () => {
       createdAt: true,
       updatedAt: true,
     },
+    where,
+    skip,
+    take,
+    orderBy: {
+      createdAt: "desc",
+    },
   });
-  return articles;
+
+  const totalItems = await prisma.artikel.count({
+    where,
+  });
+
+  return {
+    articles,
+    totalItems,
+  };
 };
 
 const getArticleByIdRepository = async (id: number) => {

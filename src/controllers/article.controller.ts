@@ -7,14 +7,24 @@ import {
 } from "../usecases/article.usecase.js";
 import { Request, Response } from "express";
 import { successResponse, errorResponse } from "../utils/response.js";
-import { ArticleInput } from "../types/article.js";
+import { ArticleInput, FilterArticle } from "../types/article.js";
 
 const getAllArticleController = async (req: Request, res: Response) => {
   try {
-    const articles = await getAllArticleUseCase();
-    successResponse(res, articles, "Articles fetched successfully");
+    const filter: FilterArticle = {
+      title: req.query.title ? String(req.query.title) : undefined,
+      page: req.query.page ? Number(req.query.page) : undefined,
+      limit: req.query.limit ? Number(req.query.limit) : undefined,
+    };
+
+    const { articles, pagination } = await getAllArticleUseCase(filter);
+
+    successResponse(res, articles, "Articles fetched successfully", pagination);
   } catch (error) {
-    errorResponse(res, "Failed to fetch articles");
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to fetch articles";
+
+    errorResponse(res, errorMessage);
   }
 };
 

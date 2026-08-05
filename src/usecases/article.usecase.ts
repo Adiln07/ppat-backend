@@ -5,11 +5,60 @@ import {
   updateArticleRepository,
   deleteArticleRepository,
 } from "../repositories/article.repository.js";
-import { ArticleInput } from "../types/article.js";
+import { ArticleInput, FilterArticle } from "../types/article.js";
+import fs from "fs/promises";
+import path from "path";
+import { Pagination } from "../types/pagination.js";
 
-const getAllArticleUseCase = async () => {
-  const articles = await getAllArticleRepository();
-  return articles;
+const getAllArticleUseCase = async (filter: FilterArticle) => {
+  if (filter.title) {
+    if (!filter.title.trim()) {
+      throw new Error("Invalid Searching By Title");
+    }
+  }
+
+  if (filter.page) {
+    const page = Number(filter.page);
+
+    if (isNaN(page)) {
+      throw new Error("Page must be a number");
+    }
+
+    if (page <= 0) {
+      throw new Error("Invalid Page");
+    }
+  }
+
+  if (filter.limit) {
+    const limit = Number(filter.limit);
+
+    if (isNaN(limit)) {
+      throw new Error("Limit must be a number");
+    }
+
+    if (limit <= 0) {
+      throw new Error("Invalid Limit");
+    }
+  }
+
+  const { articles, totalItems } = await getAllArticleRepository(filter);
+
+  const page = Number(filter.page) || 1;
+  const limit = Number(filter.limit) || 10;
+
+  const totalPages = Math.ceil(totalItems / limit);
+
+  const pagination: Pagination = {
+    page,
+    limit,
+    totalItems,
+    totalPages,
+  };
+
+  return {
+    articles,
+    pagination,
+  };
 };
 
 const getArticleByIdUseCase = async (id: number) => {
@@ -128,6 +177,20 @@ const updateArticleUseCase = async (id: number, articleData: ArticleInput) => {
 
   const updateArticle = await updateArticleRepository(id, updateData);
 
+  // Hapus gambar lama jika gambar berubah
+  const oldImage = existingArticle.imageUrl;
+  const newImage = updateData.imageUrl;
+
+  if (oldImage && oldImage !== newImage) {
+    const oldImagePath = path.join(process.cwd(), oldImage.replace(/^\/+/, ""));
+
+    try {
+      await fs.unlink(oldImagePath);
+    } catch (error) {
+      console.error(`Failed to delete image: ${oldImagePath}`, error);
+    }
+  }
+
   return updateArticle;
 };
 
@@ -142,6 +205,18 @@ const deletedArticleUseCase = async (id: number) => {
   }
 
   const deletedArticle = await deleteArticleRepository(id);
+
+  const imageUrl = existingArticle.imageUrl;
+
+  if (imageUrl) {
+    const imagePath = path.join(process.cwd(), imageUrl.replace(/^\/+/, ""));
+
+    try {
+      await fs.unlink(imagePath);
+    } catch (error) {
+      console.error(`Failed to delete image: ${imagePath}`, error);
+    }
+  }
   return deletedArticle;
 };
 

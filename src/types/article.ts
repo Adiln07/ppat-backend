@@ -5,3 +5,9 @@ export type ArticleInput = {
   imageUrl: string;
   description: string;
 };
+
+export type FilterArticle = {
+  title?: string;
+  page?: number;
+  limit?: number;
+};
