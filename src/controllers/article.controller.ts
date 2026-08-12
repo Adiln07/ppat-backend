@@ -12,8 +12,8 @@ import { ArticleInput, FilterArticle } from "../types/article.js";
 const getAllArticleController = async (req: Request, res: Response) => {
   try {
     const filter: FilterArticle = {
-      title: req.query.title ? String(req.query.title) : undefined,
-      page: req.query.page ? Number(req.query.page) : undefined,
+      title: req.query.name ? String(req.query.name) : undefined,
+      page: req.query.pages ? Number(req.query.pages) : undefined,
       limit: req.query.limit ? Number(req.query.limit) : undefined,
     };
 

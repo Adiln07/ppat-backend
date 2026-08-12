@@ -5,6 +5,7 @@ import notariesRoutes from "./routes/notaries.route.js";
 import articleRoutes from "./routes/article.route.js";
 import authRoutes from "./routes/auth.route.js";
 import uploadRoutes from "./routes/upload.route.js";
+import publicRoutes from "./routes/public.route.js";
 import cors from "cors";
 import path from "path";
 dotenv.config();
@@ -26,6 +27,8 @@ app.use("/notaries", notariesRoutes);
 app.use("/article", articleRoutes);
 app.use("/upload", uploadRoutes);
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
+app.use("/public", publicRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);

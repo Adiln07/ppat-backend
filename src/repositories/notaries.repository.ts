@@ -29,6 +29,11 @@ const getAllNotariesRepository = async (filter: FilterNotary) => {
       imageUrl: true,
       createdAt: true,
       updatedAt: true,
+      kota: {
+        select: {
+          name: true,
+        },
+      },
     },
     where,
     skip,
