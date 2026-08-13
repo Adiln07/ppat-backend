@@ -14,11 +14,17 @@ const app = express();
 
 app.use(cors());
 
-const PORT = process.env.PORT;
+const PORT = Number(process.env.PORT) || 3000;
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello Express + TypeScript !");
+});
+app.get("/health", (_req, res) => {
+  res.json({
+    status: "ok",
+    message: "Backend berjalan",
+  });
 });
 
 app.use("/admin", authRoutes);
