@@ -36,6 +36,6 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use("/public", publicRoutes);
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
