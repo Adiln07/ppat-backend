@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "prisma generate && tsc && node scripts/copy-prisma-engine.js",
+    "build": "prisma generate && tsc",
     "start": "node dist/index.js"
   },
   "keywords": [],
@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/adapter-mariadb": "^7.9.1",
     "@prisma/client": "^6.19.3",
     "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
@@ -25,6 +26,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "mariadb": "^3.5.3",
     "multer": "^2.2.0",
     "prisma": "^6.19.3",
     "typescript": "^6.0.3"
