@@ -17,6 +17,10 @@ const adapter = new PrismaMariaDb({
   database: databaseUrl.pathname.replace("/", ""),
 });
 
+console.log("DB HOST:", databaseUrl.hostname);
+console.log("DB PORT:", databaseUrl.port);
+console.log("DB NAME:", databaseUrl.pathname.replace("/", ""));
+
 const prisma = new PrismaClient({
   adapter,
 });
