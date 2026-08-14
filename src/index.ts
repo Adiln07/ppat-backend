@@ -8,6 +8,7 @@ import uploadRoutes from "./routes/upload.route.js";
 import publicRoutes from "./routes/public.route.js";
 import cors from "cors";
 import path from "path";
+import prisma from "./config/prisma.js";
 dotenv.config();
 
 const app = express();
@@ -36,6 +37,17 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use("/public", publicRoutes);
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, "0.0.0.0", async () => {
   console.log(`Server is running at http://localhost:${PORT}`);
+  try {
+    await prisma.$connect();
+    console.log("DATABASE CONNECT: SUCCESS");
+  } catch (err: any) {
+    console.log(
+      "DATABASE CONNECT FAILED:",
+      err?.message,
+      err?.code,
+      err?.cause,
+    );
+  }
 });
