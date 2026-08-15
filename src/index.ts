@@ -13,7 +13,12 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://ppatpengdapareparedst.web.id",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
 
 const PORT = Number(process.env.PORT) || 3000;
 app.use(express.json());
