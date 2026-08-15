@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
+    "dev": "tsx watch src/index.ts",
     "build": "npx prisma generate && tsc",
     "start": "node dist/server.js",
     "postinstall": "npx prisma generate"
