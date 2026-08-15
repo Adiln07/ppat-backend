@@ -46,12 +46,7 @@ app.listen(PORT, "0.0.0.0", async () => {
   try {
     await prisma.$connect();
     console.log("DATABASE CONNECT: SUCCESS");
-  } catch (err: any) {
-    console.log(
-      "DATABASE CONNECT FAILED:",
-      err?.message,
-      err?.code,
-      err?.cause,
-    );
+  } catch (err) {
+    console.error("DATABASE CONNECT FAILED:", err.message);
   }
 });
