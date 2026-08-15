@@ -61,8 +61,8 @@ if (databaseUrl.protocol !== "mysql:") {
 }
 
 const adapter = new PrismaMariaDb({
-  host: databaseUrl.hostname,
-  port: Number(databaseUrl.port || 3306),
+  host: "localhost",
+  port: 3306,
   user: decodeURIComponent(databaseUrl.username),
   password: decodeURIComponent(databaseUrl.password),
   database: decodeURIComponent(databaseUrl.pathname.slice(1)),
