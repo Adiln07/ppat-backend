@@ -5,9 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "prisma generate && tsc",
+    "build": "prisma generate && tsc && npm run copy-engine",
+    "copy-engine": "node -e \"require('fs').cpSync('src/generated/prisma','dist/generated/prisma',{recursive:true})\"",
     "start": "node dist/index.js",
-    "postinstall": "prisma generate"
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "",
