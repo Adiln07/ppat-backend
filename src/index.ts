@@ -16,8 +16,7 @@ const app = express();
 app.use(cors({
   origin: "https://ppatpengdapareparedst.web.id",
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 const PORT = Number(process.env.PORT) || 3000;
