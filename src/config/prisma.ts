@@ -63,12 +63,9 @@ if (databaseUrl.protocol !== "mysql:") {
 const adapter = new PrismaMariaDb({
   host: "localhost",
   port: 3306,
-  // user: decodeURIComponent(databaseUrl.username),
-  // password: decodeURIComponent(databaseUrl.password),
-  // database: decodeURIComponent(databaseUrl.pathname.slice(1)),
-  user: "u3328314612_admin",
-  password: "Ppsat2026_SecureDb",
-  database: "u332831461_db_ppsat",
+  user: decodeURIComponent(databaseUrl.username),
+  password: decodeURIComponent(databaseUrl.password),
+  database: decodeURIComponent(databaseUrl.pathname.slice(1)),
   connectionLimit: 3,
 });
 
