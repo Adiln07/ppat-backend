@@ -1,9 +1,9 @@
-// import { PrismaClient } from "../generated/prisma/client.js";
+import { PrismaClient } from "../generated/prisma/client.js";
 // import { PrismaClient } from "@prisma/client";
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
-// export default prisma;
+export default prisma;
 
 // import { PrismaClient } from "../generated/prisma/client.js";
 // import { PrismaMariaDb } from "@prisma/adapter-mariadb";
@@ -110,41 +110,41 @@
 
 // export default prisma;
 
-import { PrismaClient } from "../generated/prisma/client.js";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+// import { PrismaClient } from "../generated/prisma/client.js";
+// import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
-const rawDatabaseUrl = process.env.DATABASE_URL;
+// const rawDatabaseUrl = process.env.DATABASE_URL;
 
-if (!rawDatabaseUrl) {
-  throw new Error("DATABASE_URL belum tersedia di environment variables");
-}
+// if (!rawDatabaseUrl) {
+//   throw new Error("DATABASE_URL belum tersedia di environment variables");
+// }
 
-const databaseUrl = new URL(rawDatabaseUrl);
+// const databaseUrl = new URL(rawDatabaseUrl);
 
-if (databaseUrl.protocol !== "mysql:") {
-  throw new Error("DATABASE_URL harus diawali mysql://");
-}
+// if (databaseUrl.protocol !== "mysql:") {
+//   throw new Error("DATABASE_URL harus diawali mysql://");
+// }
 
-const dbConfig = {
-  host: databaseUrl.hostname,
-  port: databaseUrl.port ? Number(databaseUrl.port) : 3306,
-  user: decodeURIComponent(databaseUrl.username),
-  password: decodeURIComponent(databaseUrl.password),
-  database: decodeURIComponent(databaseUrl.pathname.slice(1)),
-  connectionLimit: 3,
-  acquireTimeout: 15000, // beri waktu lebih lama untuk dapat koneksi dari pool
-  idleTimeout: 5, // detik — koneksi idle ditutup cepat, tidak sempat "beku"
-  minimumIdle: 0, // jangan simpan koneksi nganggur, selalu bikin baru saat dibutuhkan
-};
+// const dbConfig = {
+//   host: databaseUrl.hostname,
+//   port: databaseUrl.port ? Number(databaseUrl.port) : 3306,
+//   user: decodeURIComponent(databaseUrl.username),
+//   password: decodeURIComponent(databaseUrl.password),
+//   database: decodeURIComponent(databaseUrl.pathname.slice(1)),
+//   connectionLimit: 3,
+//   acquireTimeout: 15000, // beri waktu lebih lama untuk dapat koneksi dari pool
+//   idleTimeout: 5, // detik — koneksi idle ditutup cepat, tidak sempat "beku"
+//   minimumIdle: 0, // jangan simpan koneksi nganggur, selalu bikin baru saat dibutuhkan
+// };
 
-console.log("DEBUG DB host:", dbConfig.host);
-console.log("DEBUG DB port:", dbConfig.port);
-console.log("DEBUG DB user:", dbConfig.user);
-console.log("DEBUG DB database:", dbConfig.database);
-console.log("DEBUG DB password exists:", !!dbConfig.password);
+// console.log("DEBUG DB host:", dbConfig.host);
+// console.log("DEBUG DB port:", dbConfig.port);
+// console.log("DEBUG DB user:", dbConfig.user);
+// console.log("DEBUG DB database:", dbConfig.database);
+// console.log("DEBUG DB password exists:", !!dbConfig.password);
 
-const adapter = new PrismaMariaDb(dbConfig);
+// const adapter = new PrismaMariaDb(dbConfig);
 
-const prisma = new PrismaClient({ adapter });
+// const prisma = new PrismaClient({ adapter });
 
-export default prisma;
+// export default prisma;
