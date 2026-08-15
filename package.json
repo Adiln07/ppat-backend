@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "prisma generate && prisma migrate deploy && tsc",
-    "copy-engine": "node -e \"require('fs').cpSync('src/generated/prisma','dist/generated/prisma',{recursive:true})\"",
     "start": "node dist/index.js",
     "postinstall": "npm run build"
   },
