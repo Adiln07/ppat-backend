@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "prisma generate && prisma db push && tsc && mkdir -p dist/generated/prisma && cp src/generated/prisma/*.node dist/generated/prisma/",
+    "build": "prisma generate && prisma db push && tsc",
     "start": "node dist/index.js",
     "postinstall": "npm run build"
   },
